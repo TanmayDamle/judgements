@@ -4,9 +4,19 @@ from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseUpload
 from googleapiclient.errors import HttpError
+import json
 
 SCOPES = ['https://www.googleapis.com/auth/drive.file']
-CREDENTIALS_FILE = 'credentials.json'
+# CREDENTIALS_FILE = 'credentials.json'
+
+from tempfile import NamedTemporaryFile
+
+# Load from env and write to temp file
+credentials = json.loads(os.getenv("GOOGLE_CREDENTIALS_JSON"))
+temp_file = NamedTemporaryFile(delete=False, suffix=".json", mode="w")
+json.dump(credentials, temp_file)
+temp_file.close()
+CREDENTIALS_FILE = temp_file.name
 
 # In-memory storage of ongoing flows keyed by state
 flows = {}
