@@ -22,10 +22,12 @@ CREDENTIALS_FILE = temp_file.name
 flows = {}
 
 def initiate_google_auth_flow():
+    REDIRECT_URI = os.getenv("REDIRECT_URI", "http://localhost:8000/oauth2callback")
+
     flow = Flow.from_client_secrets_file(
         CREDENTIALS_FILE,
         scopes=SCOPES,
-        redirect_uri='http://localhost:8000/oauth2callback'
+        redirect_uri=REDIRECT_URI
     )
     auth_url, state = flow.authorization_url(
         access_type='offline', include_granted_scopes='true'
